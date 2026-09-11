@@ -1,14 +1,31 @@
 __pycache__/
 *.py[cod]
-
+*.bak
+*$py.class
+pip-log.txt
+pip-delete-this-directory.txt
+.ipynb_checkpoints
+.python-version
+celerybeat-schedule.*
+# Environments 
 db.sqlite3
 *.log
+*.pot
+*.pyc
 
 venv/
 env/
 .venv/
 .env
-
+ENV/
+env.bak/
+venv.bak/
+.mypy_cache/
+**/migrations/
+*.DS_Store
+**/pycache/
+**/.DS_Store
+.history
 .vscode/
 .idea/
 
