@@ -3,8 +3,7 @@ from django.http import HttpResponse
 
 
 def index(request):
-  name = request.GET.get("name") or "World"
-  return render(request, "bookmodule/index.html", {"name":name})
+  return render(request, "bookmodule/index.html")
 
 
 
@@ -26,3 +25,12 @@ def viewbook(request, bookId):
 
     context = {'book': targetBook}
     return render(request, 'bookmodule/show.html', context)
+
+def list_books(request):
+    return render(request, 'bookmodule/list_books.html')
+
+def viewbook(request, bookId):
+    return render(request, 'bookmodule/one_book.html')
+
+def aboutus(request):
+    return render(request, 'bookmodule/aboutus.html')
