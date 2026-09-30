@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tables</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <h3>Table 1: Table of Fruits and Their Prices</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Fruit</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Apple</td>
+                <td>$0.25</td>
+            </tr>
+            <tr>
+                <td>Orange</td>
+                <td>$0.50</td>
+            </tr>
+            <tr>
+                <td>Banana</td>
+                <td>$1.00</td>
+            </tr>
+            <tr>
+                <td>Pineapple</td>
+                <td>$2.00</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <th>$3.75</th>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <h3>Table 2: A more complex sample table</h3>
+    <table>
+        <thead>
+            <tr>
+                <th colspan="2" rowspan="2"></th>
+                <th colspan="3">Camelid comparison<br><small>Approximate as of 6/2011</small></th>
+            </tr>
+            <tr>
+                <th># of humps</th>
+                <th>Spits?</th>
+                <th>Produces wool?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th rowspan="2">Indigenous region</th>
+                <th>Dromedary</th>
+                <td>1</td>
+                <td>Arabian Peninsula</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <th>Camels (bactrian)</th>
+                <td>2</td>
+                <td>Africa/Asia</td>
+                <td>Yes</td>
+            </tr>
+            <tr>
+                <th colspan="2">Llamas</th>
+                <td>1</td>
+                <td>Andes Mountains</td>
+                <td>Yes</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
