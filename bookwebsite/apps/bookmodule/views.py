@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Book
-
+from django.shortcuts import render
+from django.db.models import Q, Count, Sum, Avg, Max, Min
+from .models import Book, Student, Address
 
 def index(request):
   return render(request, "bookmodule/index.html")
@@ -85,7 +87,7 @@ def search_books(request):
 
 
 def simple_query(request):
-    # لاحظ وجود شرطتين سفليتين __ بعد title
+    
     mybooks = Book.objects.filter(title__icontains='and')
     return render(request, 'bookmodule/bookList.html', {'books': mybooks})
 
@@ -96,3 +98,46 @@ def complex_query(request):
         return render(request, 'bookmodule/bookList.html', {'books': mybooks})
     else:
         return render(request, 'bookmodule/index.html')
+    
+
+
+
+# Task 1: Price <= 50 using Q operator
+def task1(request):
+    mybooks = Book.objects.filter(Q(price__lte=50))
+    return render(request, 'bookmodule/lab8/task1.html', {'books': mybooks})
+
+# Task 2: Edition > 2 and (title contains 'qu' OR author contains 'qu')
+def task2(request):
+    mybooks = Book.objects.filter(
+        Q(edition__gt=2) & (Q(title__icontains='qu') | Q(author__icontains='qu'))
+    )
+    return render(request, 'bookmodule/lab8/task2.html', {'books': mybooks})
+
+# Task 3: Opposite to Task 2 using ~ (NOT operator)
+def task3(request):
+    mybooks = Book.objects.filter(
+        ~Q(edition__gt=2) & ~(Q(title__icontains='qu') | Q(author__icontains='qu'))
+    )
+    return render(request, 'bookmodule/lab8/task3.html', {'books': mybooks})
+
+# Task 4: Order books by title
+def task4(request):
+    mybooks = Book.objects.all().order_by('title')
+    return render(request, 'bookmodule/lab8/task4.html', {'books': mybooks})
+
+# Task 5: Aggregation functions
+def task5(request):
+    stats = Book.objects.aggregate(
+        count=Count('id'),
+        total_price=Sum('price'),
+        avg_price=Avg('price'),
+        max_price=Max('price'),
+        min_price=Min('price')
+    )
+    return render(request, 'bookmodule/lab8/task5.html', {'stats': stats})
+
+# Task 7: Count students in each city
+def task7(request):
+    cities = Address.objects.annotate(student_count=Count('student'))
+    return render(request, 'bookmodule/lab8/task7.html', {'cities': cities})

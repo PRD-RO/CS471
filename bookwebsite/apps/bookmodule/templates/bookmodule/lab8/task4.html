@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+<h2>Task Books Result</h2>
+<ul>
+  {% for book in books %}
+    <li>Title: {{ book.title }} | Author: {{ book.author }} | Price: {{ book.price }} | Edition: {{ book.edition }}</li>
+  {% empty %}
+    <li>No books found matching the criteria.</li>
+  {% endfor %}
+</ul>
+{% endblock content %}
