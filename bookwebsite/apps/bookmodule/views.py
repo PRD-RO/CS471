@@ -104,20 +104,20 @@ def complex_query(request):
 
 # Task 1: Price <= 50 using Q operator
 def task1(request):
-    mybooks = Book.objects.filter(Q(price__lte=50))
+    mybooks = Book.objects.filter(Q(price__lte=80))
     return render(request, 'bookmodule/lab8/task1.html', {'books': mybooks})
 
-# Task 2: Edition > 2 and (title contains 'qu' OR author contains 'qu')
+# Task 2: Edition > 3 and (title contains 'co' OR author contains 'qu') (تم التعديل إلى 3 و 'co')
 def task2(request):
     mybooks = Book.objects.filter(
-        Q(edition__gt=2) & (Q(title__icontains='qu') | Q(author__icontains='qu'))
+        Q(edition__gt=3) & (Q(title__icontains='co') | Q(author__icontains='co'))
     )
     return render(request, 'bookmodule/lab8/task2.html', {'books': mybooks})
 
 # Task 3: Opposite to Task 2 using ~ (NOT operator)
 def task3(request):
     mybooks = Book.objects.filter(
-        ~Q(edition__gt=2) & ~(Q(title__icontains='qu') | Q(author__icontains='qu'))
+        ~Q(edition__gt=3) & ~(Q(title__icontains='co') | Q(author__icontains='co'))
     )
     return render(request, 'bookmodule/lab8/task3.html', {'books': mybooks})
 
