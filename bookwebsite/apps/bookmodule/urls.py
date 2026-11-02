@@ -20,4 +20,21 @@ urlpatterns = [
     path('lab8/task4', views.task4, name='lab8.task4'),
     path('lab8/task5', views.task5, name='lab8.task5'),
     path('lab8/task7', views.task7, name='lab8.task7'),
+    path('lab9/task1', views.lab9_task1, name='lab9_task1'),  
+    path('lab9/task2', views.lab9_task2, name='lab9_task2'),  
+    path('lab9/task3', views.lab9_task3, name='lab9_task3'),  
+    path('lab9/task4', views.lab9_task4, name='lab9_task4'),  
+    path('lab9/task5', views.lab9_task5, name='lab9_task5'),  
+    path('lab9/task6', views.lab9_task6, name='lab9_task6'), 
+    # --- Part 1: CRUD بدون استخدام Django Forms ---
+    path('lab9_part1/listbooks', views.lab10_part1_list, name='lab10_p1_list'),
+    path('lab9_part1/addbook', views.lab10_part1_add, name='lab10_p1_add'),
+    path('lab9_part1/editbook/<int:id>', views.lab10_part1_edit, name='lab10_p1_edit'),
+    path('lab9_part1/deletebook/<int:id>', views.lab10_part1_delete, name='lab10_p1_delete'),
+
+    # --- Part 2: CRUD باستخدام Django Forms ---
+    path('lab9_part2/listbooks', views.lab10_part2_list, name='lab10_p2_list'),
+    path('lab9_part2/addbook', views.lab10_part2_add, name='lab10_p2_add'),
+    path('lab9_part2/editbook/<int:id>', views.lab10_part2_edit, name='lab10_p2_edit'),
+    path('lab9_part2/deletebook/<int:id>', views.lab10_part2_delete, name='lab10_p2_delete'), 
 ]

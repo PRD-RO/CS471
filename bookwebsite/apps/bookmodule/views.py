@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.db.models import Q, Count, Sum, Avg, Max, Min
 from .models import Book, Student, Address
 
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Book
 def index(request):
   return render(request, "bookmodule/index.html")
 
@@ -101,7 +103,7 @@ def complex_query(request):
     
 
 
-
+#lab 9 
 # Task 1: Price <= 50 using Q operator
 def task1(request):
     mybooks = Book.objects.filter(Q(price__lte=80))
@@ -141,3 +143,115 @@ def task5(request):
 def task7(request):
     cities = Address.objects.annotate(student_count=Count('student'))
     return render(request, 'bookmodule/lab8/task7.html', {'cities': cities})
+
+
+from django.shortcuts import render
+from django.db.models import Sum, Avg, Max, Min, Count, Q
+from .models import Book, Publisher, Author
+
+# Task 1: List books along with percentage availability using transient field
+def lab9_task1(request):
+    books = Book.objects.all()  #[cite: 16]
+    return render(request, 'bookmodule/lab9/task1.html', {'books': books})
+
+# Task 2: List publishers annotated with their respective total book stock
+def lab9_task2(request):
+    publishers = Publisher.objects.annotate(total_stock=Sum('book__quantity'))  #[cite: 16]
+    return render(request, 'bookmodule/lab9/task2.html', {'publishers': publishers})
+
+# Task 3: Get oldest book of any of those managed by every publisher
+def lab9_task3(request):
+    publishers = Publisher.objects.annotate(oldest_book=Min('book__pubdate'))  #[cite: 16]
+    return render(request, 'bookmodule/lab9/task3.html', {'publishers': publishers})
+
+# Task 4: Calculate average, min, and max price of books for each publisher
+def lab9_task4(request):
+    publishers = Publisher.objects.annotate(
+        avg_price=Avg('book__price'),
+        min_price=Min('book__price'),
+        max_price=Max('book__price')
+    )  #[cite: 16]
+    return render(request, 'bookmodule/lab9/task4.html', {'publishers': publishers})
+
+# Task 5: List publishers with a count of highly rated books, with their names and quantity
+def lab9_task5(request):
+    publishers = Publisher.objects.filter(book__rating__gte=4).annotate(highly_rated_count=Count('book'))  #
+    return render(request, 'bookmodule/lab9/task5.html', {'publishers': publishers})
+
+# Task 6: Count of books for each publisher, filter only books with price > 50 and 1 <= quantity < 5
+def lab9_task6(request):
+    publishers = Publisher.objects.annotate(
+        filtered_books_count=Count(
+            'book',
+            filter=Q(book__price__gt=50) & Q(book__quantity__lt=5) & Q(book__quantity__gte=1)
+        )
+    )  #
+    return render(request, 'bookmodule/lab9/task6.html', {'publishers': publishers})
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Book
+from .forms import BookForm  # تأكد من وجوده أو سنقوم بإنشائه بالأسفل
+
+# ==================== Part 1 Views ====================
+def lab10_part1_list(request):
+    books = Book.objects.all()
+    return render(request, 'bookmodule/lab10/part1_list.html', {'books': books})
+
+def lab10_part1_add(request):
+    if request.method == "POST":
+        title = request.POST.get('title')
+        author = request.POST.get('author')
+        price = request.POST.get('price')
+        edition = request.POST.get('edition')
+        Book.objects.create(title=title, author=author, price=price, edition=edition)
+        return redirect('lab10_p1_list')
+    return render(request, 'bookmodule/lab10/part1_add.html')
+
+def lab10_part1_edit(request, id):
+    book = get_object_or_404(Book, id=id)
+    if request.method == "POST":
+        book.title = request.POST.get('title')
+        book.author = request.POST.get('author')
+        book.price = request.POST.get('price')
+        book.edition = request.POST.get('edition')
+        book.save()
+        return redirect('lab10_p1_list')
+    return render(request, 'bookmodule/lab10/part1_edit.html', {'book': book})
+
+def lab10_part1_delete(request, id):
+    book = get_object_or_404(Book, id=id)
+    book.delete()
+    return redirect('lab10_p1_list')
+
+
+# ==================== Part 2 Views ====================
+def lab10_part2_list(request):
+    books = Book.objects.all()
+    return render(request, 'bookmodule/lab10/part2_list.html', {'books': books})
+
+def lab10_part2_add(request):
+    if request.method == "POST":
+        form = BookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lab10_p2_list')
+    else:
+        form = BookForm()
+    return render(request, 'bookmodule/lab10/part2_form.html', {'form': form, 'action': 'Add'})
+
+def lab10_part2_edit(request, id):
+    book = get_object_or_404(Book, id=id)
+    if request.method == "POST":
+        form = BookForm(request.POST, instance=book)
+        if form.is_valid():
+            form.save()
+            return redirect('lab10_p2_list')
+    else:
+        form = BookForm(instance=book)
+    return render(request, 'bookmodule/lab10/part2_form.html', {'form': form, 'action': 'Edit'})
+
+def lab10_part2_delete(request, id):
+    book = get_object_or_404(Book, id=id)
+    book.delete()
+    return redirect('lab10_p2_list')

@@ -1,0 +1,9 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<h2>Task 4: Book Prices Statistics per Publisher</h2>
+<ul>
+  {% for pub in publishers %}
+    <li>Publisher: {{ pub.name }} | Min Price: {{ pub.min_price|default:0 }} | Max Price: {{ pub.max_price|default:0 }} | Avg Price: {{ pub.avg_price|default:0|floatformat:2 }}</li>
+  {% endfor %}
+</ul>
+{% endblock content %}

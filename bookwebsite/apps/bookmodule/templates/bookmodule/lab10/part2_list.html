@@ -1,0 +1,26 @@
+{% extends "layouts/base.html" %}
+{% block content %}
+<h2>Lab 10 - Part 2: Book List (Django Forms)</h2>
+<a href="{% url 'lab10_p2_add' %}">Add New Book (Django Form)</a>
+<br><br>
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th><th>Title</th><th>Author</th><th>Price</th><th>Edition</th><th>Actions</th>
+    </tr>
+    {% for book in books %}
+    <tr>
+        <td>{{ book.id }}</td>
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.price }}</td>
+        <td>{{ book.edition }}</td>
+        <td>
+            <a href="{% url 'lab10_p2_edit' book.id %}">Edit</a> | 
+            <a href="{% url 'lab10_p2_delete' book.id %}">Delete</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">No books found.</td></tr>
+    {% endfor %}
+</table>
+{% endblock content %}
